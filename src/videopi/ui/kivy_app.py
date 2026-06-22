@@ -11,7 +11,9 @@ class MonitorApp(App):
     def __init__(self, camera, config, **kwargs) -> None:
         super().__init__(**kwargs)
         self.camera = camera
-        self.config = config
+        # NB: don't use self.config — kivy.app.App owns that name (its own
+        # ConfigParser) and overwrites it during startup. Use app_config.
+        self.app_config = config
         self._root: MonitorRoot | None = None
 
     def build(self) -> MonitorRoot:
@@ -20,17 +22,17 @@ class MonitorApp(App):
 
         self.title = "video-pi monitor"
         Window.clearcolor = (0, 0, 0, 1)
-        if self.config.fullscreen:
+        if self.app_config.fullscreen:
             Window.fullscreen = "auto"
         else:
-            Window.size = (self.config.width, self.config.height)
+            Window.size = (self.app_config.width, self.app_config.height)
 
-        self._root = MonitorRoot(overlay_text=self.config.overlay_text)
+        self._root = MonitorRoot(overlay_text=self.app_config.overlay_text)
         return self._root
 
     def on_start(self) -> None:
         self.camera.start()
-        Clock.schedule_interval(self._pump, 1.0 / max(1, self.config.fps))
+        Clock.schedule_interval(self._pump, 1.0 / max(1, self.app_config.fps))
 
     def _pump(self, _dt) -> None:
         frame = self.camera.read()
