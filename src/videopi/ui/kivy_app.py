@@ -22,6 +22,7 @@ class MonitorApp(App):
 
         self.title = "video-pi monitor"
         Window.clearcolor = (0, 0, 0, 1)
+        Window.show_cursor = False
         if self.app_config.fullscreen:
             Window.fullscreen = "auto"
         else:
