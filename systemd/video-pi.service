@@ -1,0 +1,21 @@
+[Unit]
+Description=video-pi cinema-camera monitor
+# Wait for the graphics/DRM device to be ready before starting.
+After=systemd-user-sessions.service multi-user.target
+Wants=multi-user.target
+
+[Service]
+Type=simple
+User=__RUN_USER__
+WorkingDirectory=__REPO_DIR__
+# SDL renders straight to the panel via KMSDRM (no X/Wayland desktop needed).
+Environment=KIVY_NO_ARGS=1
+Environment=SDL_VIDEODRIVER=kmsdrm
+ExecStart=__REPO_DIR__/.venv/bin/python -m videopi --camera picamera --fullscreen
+Restart=on-failure
+RestartSec=3
+# Access to the display, GPU and input devices.
+SupplementaryGroups=video render input
+
+[Install]
+WantedBy=multi-user.target
