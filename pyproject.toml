@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "videopi"
+version = "0.1.0"
+description = "A Raspberry Pi + touchscreen cinema-camera video monitor (Kivy)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "kivy",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+# USB-webcam capture for dev machines.
+webcam = ["opencv-python"]
+# Dev tooling.
+dev = ["opencv-python", "pytest"]
+# NOTE: picamera2 is intentionally NOT a pip dependency. On Raspberry Pi OS it is
+# installed system-wide (apt) and bound to libcamera; use a --system-site-packages
+# venv so it's importable. See scripts/install_pi.sh.
+
+[project.scripts]
+videopi = "videopi.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
