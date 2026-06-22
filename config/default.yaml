@@ -1,0 +1,21 @@
+# Default configuration for video-pi.
+# CLI flags override these (e.g. `python -m videopi --camera picamera --fullscreen`).
+
+# Camera source: dummy | picamera | v4l2
+#   dummy    - generated test pattern, no hardware (good for dev)
+#   picamera - Raspberry Pi CSI camera via picamera2 (the real thing)
+#   v4l2     - USB webcam via OpenCV
+camera: dummy
+
+width: 1280
+height: 720
+fps: 30
+
+# Full-screen on the Pi panel; windowed for desktop development.
+fullscreen: false
+
+# Text shown in the header overlay (tap the screen to hide/show it).
+overlay_text: "Hello World"
+
+# Camera device index (v4l2) / camera number (picamera).
+device: 0
